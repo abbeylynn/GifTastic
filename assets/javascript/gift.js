@@ -1,17 +1,24 @@
-var topics = ["Superman", "Batman", "Aquaman", "Spiderman"]
+var topics = ["Superman", "Batman", "Aquaman", "Spiderman"];
 
-var queryURL = 'https://api.giphy.com/v1/gifs/search?q=superheroes&api_key=dc6zaTOxFJmzC';
+console.log(topics.length);
 
-//'http://api.giphy.com/v1/gifs/search?q=' + superheroes + '&api_key=dc6zaTOxFJmzC';
+function renderButtons() {
+  $(".button-holder").empty();
 
-$.ajax({
-          url: queryURL,
-          method: "GET"
-        }).done(function(response) {
-     console.log(response);
+  for (var i = 0; i < topics.length; i++) {
+    var newButton = $("<button>");
+    newButton.addClass("superhero");
+    newButton.attr("data-name", topics[i]);
+    newButton.text(topics[i]);
+    $(".button-holder").append(newButton);
+  }
+}
 
-var image = $('<img>').attr('src', response.data["0"].images.fixed_height_still.url);
-$('.gifs').append(image);
+$("#new-search").on("click", function(event) {
+  event.preventDefault();
+  var addButton = $("#search-input").val().trim();
+  topics.push(addButton);
+  renderButtons();
+});
 
- });
-
+renderButtons();
