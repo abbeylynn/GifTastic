@@ -1,15 +1,13 @@
 var topics = ["Superman", "Batman", "Aquaman", "Spiderman"];
 
-console.log(topics.length);
-
 function renderButtons() {
   $(".button-holder").empty();
 
-  for (var i = 0; i < topics.length; i++) {
+  for (var j = 0; j < topics.length; j++) {
     var newButton = $("<button>");
     newButton.addClass("superhero");
-    newButton.attr("data-name", topics[i]);
-    newButton.text(topics[i]);
+    newButton.attr("data-name", topics[j]);
+    newButton.text(topics[j]);
     $(".button-holder").append(newButton);
   }
 }
@@ -20,5 +18,31 @@ $("#new-search").on("click", function(event) {
   topics.push(addButton);
   renderButtons();
 });
+
+$(document.body).on("click", ".superhero", function() {
+  var buttonValue = $("this").attr("data-name");
+
+  var queryURL =
+    "http://api.giphy.com/v1/gifs/search?q=" +
+    topics +
+    "&api_key=dc6zaTOxFJmzC";
+
+  $.ajax({
+    url: queryURL,
+    method: "GET"
+  }).done(function(response) {
+    console.log(response);
+
+    var results = response.data;
+
+    for (var i = 0; i < 10; i++) {
+      var image = $("<img>");
+
+      image.attr("src", response.data[i].images.fixed_height_still.url);
+      $(".gifs").append(image);
+    }
+  });
+});
+
 
 renderButtons();
