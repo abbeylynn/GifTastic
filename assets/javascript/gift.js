@@ -9,8 +9,10 @@ function renderButtons() {
     newButton.attr("data-name", topics[j]);
     newButton.text(topics[j]);
     $(".button-holder").append(newButton);
-  }
-}
+  };
+};
+
+renderButtons();
 
 $("#new-search").on("click", function(event) {
   event.preventDefault();
@@ -20,11 +22,16 @@ $("#new-search").on("click", function(event) {
 });
 
 $(document.body).on("click", ".superhero", function() {
-  var buttonValue = $("this").attr("data-name");
+
+  $('.gifs').empty();
+
+  var hero = $(this).attr("data-name");
+
+  console.log(hero)
 
   var queryURL =
     "http://api.giphy.com/v1/gifs/search?q=" +
-    topics +
+    hero +
     "&api_key=dc6zaTOxFJmzC";
 
   $.ajax({
@@ -45,4 +52,4 @@ $(document.body).on("click", ".superhero", function() {
 });
 
 
-renderButtons();
+
