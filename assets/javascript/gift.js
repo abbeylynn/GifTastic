@@ -1,4 +1,4 @@
-var topics = ["Superman", "Batman", "Aquaman", "Spiderman"];
+var topics = ["Superman", "Batman", "Aquaman", "Spiderman", "Underdog"];
 
 function renderButtons() {
   $(".button-holder").empty();
@@ -22,17 +22,12 @@ $("#new-search").on("click", function(event) {
 });
 
 $(document.body).on("click", ".superhero", function() {
-
-  $('.gifs').empty();
+  $(".gifs").empty();
 
   var hero = $(this).attr("data-name");
 
-  console.log(hero)
-
   var queryURL =
-    "http://api.giphy.com/v1/gifs/search?q=" +
-    hero +
-    "&api_key=dc6zaTOxFJmzC";
+    "http://api.giphy.com/v1/gifs/search?q=" + hero + "&api_key=dc6zaTOxFJmzC";
 
   $.ajax({
     url: queryURL,
@@ -40,16 +35,23 @@ $(document.body).on("click", ".superhero", function() {
   }).done(function(response) {
     console.log(response);
 
-    var results = response.data;
-
     for (var i = 0; i < 10; i++) {
       var image = $("<img>");
 
       image.attr("src", response.data[i].images.fixed_height_still.url);
       $(".gifs").append(image);
-    }
+
+      image.attr("data-state", "still");
+
+      $(document.body).on("click", "img", function() {
+        var state = $(this).attr("data-state");
+
+        if (state === "still") {
+          $(this).attr("src", response.data[i].images.fixed_height.url);
+          $(this).attr("data-state", "animated");
+          console.log(state);
+        };
+      });
+    };
   });
 });
-
-
-
